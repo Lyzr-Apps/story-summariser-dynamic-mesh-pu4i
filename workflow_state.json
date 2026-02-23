@@ -18,7 +18,8 @@
       "role": "sub-agent",
       "provider": "perplexity",
       "model": "sonar-pro",
-      "file_output": false
+      "file_output": false,
+      "monitored_outlets": 25
     },
     "summary_organiser_agent": {
       "agent_id": "699bf652b75c9190e1cfad8e",

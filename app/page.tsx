@@ -18,12 +18,43 @@ const AGENT_ID = '699bf6640cb4051b002d36fb'
 const HISTORY_KEY = 'admm_digest_history'
 
 const LOADING_MESSAGES = [
-  'Searching Australian media...',
-  'Scanning for NDIS coverage...',
-  'Checking major outlets...',
+  'Searching 25 Australian media outlets...',
+  'Scanning ABC, Guardian AU, SMH...',
+  'Checking Herald Sun, Daily Telegraph, The Australian...',
+  'Scanning 7NEWS, 9News, SBS, news.com.au...',
+  'Checking regional outlets and specialist media...',
+  'Scanning for NDIS and disability coverage...',
   'Organising articles by theme...',
   'Writing two-sentence summaries...',
   'Preparing your digest...',
+]
+
+const MONITORED_OUTLETS = [
+  { name: 'ABC', domain: 'abc.net.au' },
+  { name: 'Guardian AU', domain: 'theguardian.com' },
+  { name: 'SMH', domain: 'smh.com.au' },
+  { name: 'The Age', domain: 'theage.com.au' },
+  { name: 'AFR', domain: 'afr.com' },
+  { name: 'Herald Sun', domain: 'heraldsun.com.au' },
+  { name: 'Daily Telegraph', domain: 'dailytelegraph.com.au' },
+  { name: 'The Australian', domain: 'theaustralian.com.au' },
+  { name: 'SBS', domain: 'sbs.com.au' },
+  { name: 'news.com.au', domain: 'news.com.au' },
+  { name: '7NEWS', domain: '7news.com.au' },
+  { name: '9News', domain: '9news.com.au' },
+  { name: 'The Nightly', domain: 'thenightly.com.au' },
+  { name: 'The New Daily', domain: 'thenewdaily.com.au' },
+  { name: 'The Saturday Paper', domain: 'thesaturdaypaper.com.au' },
+  { name: 'Courier-Mail', domain: 'couriermail.com.au' },
+  { name: 'The Advertiser', domain: 'adelaidenow.com.au' },
+  { name: 'The West Australian', domain: 'thewest.com.au' },
+  { name: 'The Mercury', domain: 'themercury.com.au' },
+  { name: 'Canberra Times', domain: 'canberratimes.com.au' },
+  { name: 'NT News', domain: 'ntnews.com.au' },
+  { name: 'The Mandarin', domain: 'themandarin.com.au' },
+  { name: 'Croakey', domain: 'croakey.org' },
+  { name: 'Redland Bayside News', domain: 'redlandbaysidenews.com.au' },
+  { name: 'Newcastle Herald', domain: 'newcastleherald.com.au' },
 ]
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
@@ -63,7 +94,7 @@ interface HistoryEntry {
 // ─── Sample Data ──────────────────────────────────────────────────────────────
 
 const SAMPLE_DIGEST: DigestData = {
-  digest_title: 'Australian Disability & NDIS Media Digest',
+  digest_title: 'Australian Media Disability Monitor — Daily Digest',
   digest_date: '2026-02-23',
   total_articles: 9,
   themes: [
@@ -201,7 +232,7 @@ function parseDigestResponse(result: AIAgentResponse): DigestData | null {
   const themes = Array.isArray(data.themes) ? data.themes : []
 
   return {
-    digest_title: data.digest_title || 'Australian Disability & NDIS Media Digest',
+    digest_title: data.digest_title || 'Australian Media Disability Monitor — Daily Digest',
     digest_date: data.digest_date || new Date().toISOString().split('T')[0],
     total_articles:
       typeof data.total_articles === 'number'
@@ -489,9 +520,24 @@ function EmptyState() {
       <h3 className="font-serif text-xl font-bold tracking-tight mb-2 text-foreground">
         No digest generated yet
       </h3>
-      <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
-        Click &quot;Generate Today&apos;s Digest&quot; to scan Australian media for NDIS and disability coverage. The system will search major outlets, categorise articles by theme, and produce a comprehensive summary.
+      <p className="text-sm text-muted-foreground max-w-md leading-relaxed mb-6">
+        Click &quot;Generate Today&apos;s Digest&quot; to scan 25 Australian media outlets for NDIS and disability coverage. The system will search each outlet, categorise articles by theme, and produce a comprehensive summary.
       </p>
+      <div className="text-left max-w-lg">
+        <p className="text-xs text-muted-foreground font-medium tracking-widest uppercase mb-3">
+          Monitored Outlets ({MONITORED_OUTLETS.length})
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {MONITORED_OUTLETS.map((outlet) => (
+            <span
+              key={outlet.domain}
+              className="inline-block text-xs px-2 py-1 border border-border bg-card text-muted-foreground"
+            >
+              {outlet.name}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
@@ -624,7 +670,7 @@ function HistorySidebar({
               </span>
             </div>
             <p className="text-xs text-muted-foreground pl-4 leading-relaxed">
-              Coordinates research, summarisation, and PDF generation across sub-agents.
+              Searches 25 Australian outlets, organises by theme, and generates PDF.
             </p>
           </div>
         </div>
@@ -689,7 +735,7 @@ export default function Page() {
 
     try {
       const result = await callAIAgent(
-        "Generate today's Australian disability and NDIS media digest for the past 24 hours. Search all major Australian media outlets for articles mentioning NDIS, National Disability Insurance Scheme, or disability. Collect complete article details including title, URL, publication, author, date, and content summary. Then categorize all found articles into themes and write two-sentence summaries for each.",
+        "Generate today's Australian Media Disability Monitor digest for the past 24 hours. Search ALL of the following 25 Australian media outlets for articles mentioning NDIS, National Disability Insurance Scheme, or disability: ABC (abc.net.au), Guardian Australia (theguardian.com), Sydney Morning Herald (smh.com.au), The Age (theage.com.au), AFR (afr.com), Herald Sun (heraldsun.com.au), Daily Telegraph (dailytelegraph.com.au), The Australian (theaustralian.com.au), SBS (sbs.com.au), news.com.au, 7NEWS (7news.com.au), 9News (9news.com.au), The Nightly (thenightly.com.au), The New Daily (thenewdaily.com.au), The Saturday Paper (thesaturdaypaper.com.au), Courier-Mail (couriermail.com.au), The Advertiser (adelaidenow.com.au), The West Australian (thewest.com.au), The Mercury (themercury.com.au), Canberra Times (canberratimes.com.au), NT News (ntnews.com.au), The Mandarin (themandarin.com.au), Croakey (croakey.org), Redland Bayside News (redlandbaysidenews.com.au), Newcastle Herald (newcastleherald.com.au). Collect complete article details including title, URL, publication, author, date, and content summary. Then categorize all found articles into themes and write two-sentence summaries for each.",
         AGENT_ID
       )
 
@@ -807,7 +853,7 @@ export default function Page() {
               </button>
               <div>
                 <h1 className="font-serif text-xl md:text-2xl font-bold tracking-tight text-foreground leading-tight">
-                  Australian Disability Media Monitor
+                  Australian Media Disability Monitor
                 </h1>
                 <p className="text-xs text-muted-foreground tracking-wide mt-0.5">
                   Daily Intelligence Digest{currentDate ? ` \u2014 ${currentDate}` : ''}
@@ -831,7 +877,7 @@ export default function Page() {
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <FiCalendar className="w-4 h-4" />
-                <span className="font-medium">Coverage window: Past 24 hours</span>
+                <span className="font-medium">Coverage: Past 24 hours across 25 outlets</span>
               </div>
               <Button
                 onClick={handleGenerate}
