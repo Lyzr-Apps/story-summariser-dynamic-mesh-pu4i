@@ -1,0 +1,45 @@
+{
+  "agent_name": "Media Research Agent",
+  "agent_id": "699bf6402efdce1c246e3725",
+  "description": "Searches Australian media from the past 24 hours for all articles mentioning NDIS, National Disability Insurance Scheme, or disability; extracts article title, URL, publication name, author, date, and key content details",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": false,
+  "response_schema": {
+    "type": "object",
+    "properties": {
+      "articles": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "url": { "type": "string" },
+            "publication": { "type": "string" },
+            "author": { "type": "string" },
+            "date": { "type": "string" },
+            "content_summary": { "type": "string" }
+          },
+          "required": ["title", "url", "publication", "author", "date", "content_summary"]
+        }
+      },
+      "total_count": { "type": "number" },
+      "search_date": { "type": "string" }
+    },
+    "required": ["articles", "total_count", "search_date"]
+  },
+  "example_response": {
+    "articles": [
+      {
+        "title": "NDIS costs projected to rise in new budget estimates",
+        "url": "https://www.smh.com.au/example",
+        "publication": "Sydney Morning Herald",
+        "author": "John Doe",
+        "date": "2026-02-23",
+        "content_summary": "New budget estimates show NDIS costs are projected to rise by 8% in the coming financial year. The Parliamentary Budget Office released the figures alongside revised participant growth numbers. The government says reforms will help manage growth while maintaining support quality."
+      }
+    ],
+    "total_count": 1,
+    "search_date": "2026-02-23"
+  }
+}

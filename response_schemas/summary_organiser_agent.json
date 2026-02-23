@@ -1,0 +1,64 @@
+{
+  "agent_name": "Summary & Organiser Agent",
+  "agent_id": "699bf652b75c9190e1cfad8e",
+  "description": "Receives raw research data, categorises articles into topic/theme groups, writes a two-sentence summary for each article, and formats the complete output with publication, author, and source link",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": false,
+  "response_schema": {
+    "type": "object",
+    "properties": {
+      "themes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "theme_name": { "type": "string" },
+            "article_count": { "type": "number" },
+            "articles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "summary": { "type": "string" },
+                  "publication": { "type": "string" },
+                  "author": { "type": "string" },
+                  "date": { "type": "string" },
+                  "url": { "type": "string" }
+                },
+                "required": ["title", "summary", "publication", "author", "date", "url"]
+              }
+            }
+          },
+          "required": ["theme_name", "article_count", "articles"]
+        }
+      },
+      "total_articles": { "type": "number" },
+      "digest_date": { "type": "string" },
+      "generation_timestamp": { "type": "string" }
+    },
+    "required": ["themes", "total_articles", "digest_date", "generation_timestamp"]
+  },
+  "example_response": {
+    "themes": [
+      {
+        "theme_name": "Policy & Funding",
+        "article_count": 2,
+        "articles": [
+          {
+            "title": "NDIS reform bill passes Senate",
+            "summary": "The federal government's NDIS reform bill passed the Senate today with bipartisan support. The legislation introduces new independent assessments and aims to improve scheme sustainability.",
+            "publication": "ABC News",
+            "author": "Jane Smith",
+            "date": "2026-02-23",
+            "url": "https://abc.net.au/news/example"
+          }
+        ]
+      }
+    ],
+    "total_articles": 2,
+    "digest_date": "2026-02-23",
+    "generation_timestamp": "2026-02-23T10:00:00Z"
+  }
+}

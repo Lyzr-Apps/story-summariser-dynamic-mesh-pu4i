@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "id": "input_node",
+      "type": "Input",
+      "label": "User Query",
+      "nodeCategory": "input"
+    },
+    {
+      "id": "manager_agent",
+      "type": "Agent",
+      "label": "Digest Coordinator Manager",
+      "nodeCategory": "agent",
+      "agent_id": "699bf6640cb4051b002d36fb"
+    },
+    {
+      "id": "research_agent",
+      "type": "Agent",
+      "label": "Media Research Agent",
+      "nodeCategory": "agent",
+      "agent_id": "699bf6402efdce1c246e3725"
+    },
+    {
+      "id": "summary_agent",
+      "type": "Agent",
+      "label": "Summary & Organiser Agent",
+      "nodeCategory": "agent",
+      "agent_id": "699bf652b75c9190e1cfad8e"
+    },
+    {
+      "id": "output_node",
+      "type": "Output",
+      "label": "Themed Digest Output",
+      "nodeCategory": "end"
+    }
+  ],
+  "edges": [
+    { "source": "input_node", "target": "manager_agent" },
+    { "source": "manager_agent", "target": "research_agent" },
+    { "source": "manager_agent", "target": "summary_agent" },
+    { "source": "research_agent", "target": "output_node" },
+    { "source": "summary_agent", "target": "output_node" }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "agent_name": "Digest Coordinator Manager",
+  "agent_id": "699bf6640cb4051b002d36fb",
+  "description": "Coordinates the research and summarisation workflow; routes the search task to the research agent, passes raw findings to the summary agent, and aggregates the final themed document for download",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": true,
+  "module_outputs_example": {
+    "artifact_files": [
+      { "file_url": "https://example.com/file.pdf" }
+    ]
+  },
+  "response_schema": {
+    "type": "object",
+    "properties": {
+      "digest_title": { "type": "string" },
+      "digest_date": { "type": "string" },
+      "total_articles": { "type": "number" },
+      "themes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "theme_name": { "type": "string" },
+            "article_count": { "type": "number" },
+            "articles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "summary": { "type": "string" },
+                  "publication": { "type": "string" },
+                  "author": { "type": "string" },
+                  "date": { "type": "string" },
+                  "url": { "type": "string" }
+                },
+                "required": ["title", "summary", "publication", "author", "date", "url"]
+              }
+            }
+          },
+          "required": ["theme_name", "article_count", "articles"]
+        }
+      },
+      "generation_timestamp": { "type": "string" }
+    },
+    "required": ["digest_title", "digest_date", "total_articles", "themes", "generation_timestamp"]
+  },
+  "example_response": {
+    "digest_title": "Australian Disability & NDIS Media Digest",
+    "digest_date": "2026-02-23",
+    "total_articles": 12,
+    "themes": [
+      {
+        "theme_name": "Policy & Funding",
+        "article_count": 3,
+        "articles": [
+          {
+            "title": "NDIS reform bill passes Senate",
+            "summary": "The federal government's NDIS reform bill passed the Senate today with bipartisan support. The legislation introduces new independent assessments and aims to improve scheme sustainability.",
+            "publication": "ABC News",
+            "author": "Jane Smith",
+            "date": "2026-02-23",
+            "url": "https://abc.net.au/news/example"
+          }
+        ]
+      }
+    ],
+    "generation_timestamp": "2026-02-23T10:00:00Z"
+  }
+}
